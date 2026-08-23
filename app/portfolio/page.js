@@ -9,7 +9,7 @@ export default function PortfolioPage() {
     <main className="max-w-7xl mx-auto px-6 py-20">
       <h1 className="font-serif text-5xl font-light mb-4">Portfolio</h1>
       <p className="font-sans text-stone max-w-xl mb-16">
-        A selection of interiors and spaces we've designed and built.
+        A selection of interiors and spaces we&apos;ve designed and built.
       </p>
 
       <div className="flex flex-col gap-16">
