@@ -1,0 +1,29 @@
+[
+  {
+    "slug": "aurelia-armchair",
+    "name": "Aurelia Armchair",
+    "category": "Seating",
+    "price": 1850,
+    "description": "A sculptural armchair in solid walnut and boucle upholstery, built for quiet rooms.",
+    "image": "/images/products/aurelia-armchair.jpg",
+    "featured": true
+  },
+  {
+    "slug": "monolith-console",
+    "name": "Monolith Console",
+    "category": "Tables",
+    "price": 2400,
+    "description": "A minimal console table with a single slab top and blackened steel base.",
+    "image": "/images/products/monolith-console.jpg",
+    "featured": true
+  },
+  {
+    "slug": "veil-floor-lamp",
+    "name": "Veil Floor Lamp",
+    "category": "Lighting",
+    "price": 690,
+    "description": "Soft, diffused light through a hand-stretched linen shade.",
+    "image": "/images/products/veil-floor-lamp.jpg",
+    "featured": false
+  }
+]

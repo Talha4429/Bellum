@@ -1,0 +1,18 @@
+[
+  {
+    "slug": "the-hampstead-residence",
+    "title": "The Hampstead Residence",
+    "location": "London, UK",
+    "year": 2024,
+    "summary": "A full interior renovation balancing warmth and restraint across five living spaces.",
+    "coverImage": "/images/portfolio/hampstead-cover.jpg",
+    "images": [
+      "/images/portfolio/hampstead-1.jpg",
+      "/images/portfolio/hampstead-2.jpg",
+      "/images/portfolio/hampstead-3.jpg",
+      "/images/portfolio/hampstead-4.jpg",
+      "/images/portfolio/hampstead-5.jpg"
+    ],
+    "featured": true
+  }
+]

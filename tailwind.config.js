@@ -10,6 +10,14 @@ module.exports = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        ivory: "#F7F5F1",
+        ink: "#111111",
+        stone: "#6B6862",
+        hairline: "#E4E1DA",
+      },
+      fontFamily: {
+        serif: ["var(--font-fraunces)", "serif"],
+        sans: ["var(--font-jost)", "sans-serif"],
       },
     },
   },
