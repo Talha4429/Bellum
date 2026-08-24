@@ -1,27 +1,33 @@
-import "@fontsource/fraunces/300.css";
-import "@fontsource/fraunces/400.css";
-import "@fontsource/fraunces/500.css";
-import "@fontsource/fraunces/600.css";
-import "@fontsource/jost/300.css";
-import "@fontsource/jost/400.css";
-import "@fontsource/jost/500.css";
 import "./globals.css";
 import { CartProvider } from "@/components/CartContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  title: "Bellum",
-  description: "Bellum — furniture & interiors",
+  title: "Bellum | Architecture & Bespoke Furniture Studio",
+  description:
+    "Bespoke architectural and interior solutions rooted in minimal design and high-end tactility. Designed in Lahore.",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className="font-sans bg-ivory text-ink antialiased">
+    <html lang="en" className="scroll-smooth">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="font-sans bg-[#F7F5F1] text-[#111111] antialiased min-h-screen flex flex-col selection:bg-ink selection:text-ivory">
         <CartProvider>
           <Navbar />
-          {children}
+          <div className="flex-grow flex flex-col">{children}</div>
           <Footer />
         </CartProvider>
       </body>

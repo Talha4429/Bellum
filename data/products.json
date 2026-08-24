@@ -3,27 +3,96 @@
     "slug": "aurelia-armchair",
     "name": "Aurelia Armchair",
     "category": "Seating",
+    "sku": "SEAT-092",
     "price": 1850,
-    "description": "A sculptural armchair in solid walnut and boucle upholstery, built for quiet rooms.",
+    "description": "A sculptural armchair in solid walnut and textured boucle upholstery, built with architectural precision for quiet, considered rooms.",
+    "finish": "Ink / Ivory",
     "image": "/images/products/aurelia-armchair.jpg",
-    "featured": true
+    "featured": true,
+    "status": "Active"
   },
   {
     "slug": "monolith-console",
     "name": "Monolith Console",
     "category": "Tables",
+    "sku": "TABL-114",
     "price": 2400,
-    "description": "A minimal console table with a single slab top and blackened steel base.",
+    "description": "A minimal console table with a single slab top and blackened steel base, emphasizing raw texture and rigid hairlines.",
+    "finish": "Textured Stone",
     "image": "/images/products/monolith-console.jpg",
-    "featured": true
+    "featured": true,
+    "status": "Active"
+  },
+  {
+    "slug": "lumina-floor-lamp",
+    "name": "Lumina Floor Lamp",
+    "category": "Lighting",
+    "sku": "LITE-201",
+    "price": 890,
+    "description": "A slender floor lamp featuring a geometric frosted glass diffuser that creates a soft, serene pool of ambient light.",
+    "finish": "Matte Black",
+    "image": "/images/products/veil-floor-lamp.jpg",
+    "featured": true,
+    "status": "Active"
+  },
+  {
+    "slug": "oak-coffee-table",
+    "name": "Oak Coffee Table",
+    "category": "Tables",
+    "sku": "TABL-045",
+    "price": 1850,
+    "description": "A sleek, low-profile coffee table crafted from solid blackened oak with a subtly textured surface and clean architectural joinery.",
+    "finish": "Solid Oak",
+    "image": "/images/portfolio/hampstead-3.jpg",
+    "featured": true,
+    "status": "Active"
+  },
+  {
+    "slug": "lounge-chair-no-1",
+    "name": "Lounge Chair No. 1",
+    "category": "Seating",
+    "sku": "SEAT-018",
+    "price": 1200,
+    "description": "Crafted from pale ash wood and upholstered in warm, tactile ivory boucle for enduring everyday comfort.",
+    "finish": "Ash / Boucle",
+    "image": "/images/portfolio/hampstead-2.jpg",
+    "featured": false,
+    "status": "Active"
+  },
+  {
+    "slug": "cylinder-floor-lamp",
+    "name": "Cylinder Floor Lamp",
+    "category": "Lighting",
+    "sku": "LITE-105",
+    "price": 450,
+    "description": "Slender matte black stem with a brushed steel conical reflector shade, designed for focused reading light.",
+    "finish": "Brushed Steel",
+    "image": "/images/portfolio/hampstead-4.jpg",
+    "featured": false,
+    "status": "Active"
+  },
+  {
+    "slug": "floating-shelf-system",
+    "name": "Floating Shelf System",
+    "category": "Storage",
+    "sku": "STOR-011",
+    "price": 1200,
+    "description": "Modular wall-mounted solid walnut floating shelf system with concealed steel supports.",
+    "finish": "Solid Walnut",
+    "image": "/images/misc/materials-board.jpg",
+    "featured": false,
+    "status": "Active"
   },
   {
     "slug": "veil-floor-lamp",
     "name": "Veil Floor Lamp",
     "category": "Lighting",
+    "sku": "LITE-303",
     "price": 690,
-    "description": "Soft, diffused light through a hand-stretched linen shade.",
+    "description": "Soft, diffused light through a hand-stretched linen shade and minimal blackened steel framework.",
+    "finish": "Natural Linen",
     "image": "/images/products/veil-floor-lamp.jpg",
-    "featured": false
+    "featured": false,
+    "status": "Draft"
   }
 ]

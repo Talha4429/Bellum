@@ -1,10 +1,12 @@
 [
   {
-    "slug": "the-hampstead-residence",
-    "title": "The Hampstead Residence",
-    "location": "London, UK",
-    "year": 2024,
-    "summary": "A full interior renovation balancing warmth and restraint across five living spaces.",
+    "slug": "the-courtyard-residence",
+    "title": "The Courtyard Residence",
+    "location": "Lahore, Pakistan",
+    "year": 2023,
+    "category": "Residential",
+    "tags": ["RESIDENTIAL", "ARCHITECTURE"],
+    "summary": "A bespoke residential project emphasizing natural light and spatial fluidity. The design integrates interior spaces seamlessly with central courtyard elements, focusing on raw materiality and clean, structural lines.",
     "coverImage": "/images/portfolio/hampstead-cover.jpg",
     "images": [
       "/images/portfolio/hampstead-1.jpg",
@@ -13,6 +15,59 @@
       "/images/portfolio/hampstead-4.jpg",
       "/images/portfolio/hampstead-5.jpg"
     ],
-    "featured": true
+    "featured": true,
+    "status": "Published"
+  },
+  {
+    "slug": "studio-alpha-workspace",
+    "title": "Studio Alpha Workspace",
+    "location": "Dubai, UAE",
+    "year": 2024,
+    "category": "Commercial",
+    "tags": ["COMMERCIAL", "INTERIOR"],
+    "summary": "An adaptive reuse project transforming an industrial volume into a high-end creative studio. The aesthetic relies on structural honesty, employing a rigid grid system and a minimal material palette.",
+    "coverImage": "/images/portfolio/hampstead-1.jpg",
+    "images": [
+      "/images/portfolio/hampstead-1.jpg",
+      "/images/portfolio/hampstead-2.jpg",
+      "/images/portfolio/hampstead-3.jpg"
+    ],
+    "featured": true,
+    "status": "Published"
+  },
+  {
+    "slug": "the-hampstead-residence",
+    "title": "The Hampstead Residence",
+    "location": "London, UK",
+    "year": 2024,
+    "category": "Residential",
+    "tags": ["RESIDENTIAL", "INTERIOR"],
+    "summary": "A full interior renovation balancing warmth and restraint across five living spaces with custom bespoke millwork.",
+    "coverImage": "/images/portfolio/hampstead-cover.jpg",
+    "images": [
+      "/images/portfolio/hampstead-1.jpg",
+      "/images/portfolio/hampstead-2.jpg",
+      "/images/portfolio/hampstead-3.jpg",
+      "/images/portfolio/hampstead-4.jpg",
+      "/images/portfolio/hampstead-5.jpg"
+    ],
+    "featured": true,
+    "status": "Published"
+  },
+  {
+    "slug": "villa-nova-concept",
+    "title": "Villa Nova Concept",
+    "location": "Islamabad, Pakistan",
+    "year": 2024,
+    "category": "Residential",
+    "tags": ["CONCEPT", "ARCHITECTURE"],
+    "summary": "A cliffside minimalist pavilion concept exploring monolithic limestone volumes and panoramic framing.",
+    "coverImage": "/images/portfolio/hampstead-3.jpg",
+    "images": [
+      "/images/portfolio/hampstead-3.jpg",
+      "/images/portfolio/hampstead-4.jpg"
+    ],
+    "featured": false,
+    "status": "Draft"
   }
 ]
