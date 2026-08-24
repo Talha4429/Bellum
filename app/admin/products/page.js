@@ -208,7 +208,7 @@ export default function AdminProductsPage() {
 
                   {/* Price */}
                   <td className="py-4 px-6 text-right font-medium text-ink">
-                    ${product.price}
+                    PKR {Number(product.price).toLocaleString()}
                   </td>
 
                   {/* Featured Toggle */}
@@ -251,6 +251,15 @@ export default function AdminProductsPage() {
                     >
                       <span className="material-symbols-outlined text-[18px]">
                         visibility
+                      </span>
+                    </Link>
+                    <Link
+                      href={`/admin/products/${product.slug}/edit`}
+                      className="text-stone hover:text-ink transition-colors"
+                      title="Edit Product"
+                    >
+                      <span className="material-symbols-outlined text-[18px]">
+                        edit
                       </span>
                     </Link>
                     <button

@@ -102,7 +102,7 @@ export default function SignInPage() {
           </div>
         </form>
 
-        <div className="mt-8 pt-6 border-t border-[#E4E1DA] text-center font-sans text-xs text-stone space-y-2">
+        {/* <div className="mt-8 pt-6 border-t border-[#E4E1DA] text-center font-sans text-xs text-stone space-y-2">
           <p>
             Looking for administration?{" "}
             <Link
@@ -112,7 +112,7 @@ export default function SignInPage() {
               Admin Portal
             </Link>
           </p>
-        </div>
+        </div> */}
       </div>
     </main>
   );

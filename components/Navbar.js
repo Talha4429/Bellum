@@ -10,12 +10,14 @@ export default function Navbar() {
   const pathname = usePathname();
   const { itemCount } = useCart();
   const [aboutOpen, setAboutOpen] = useState(false);
+  const [collectionOpen, setCollectionOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Close mobile menu on route change
   useEffect(() => {
     setMobileMenuOpen(false);
     setAboutOpen(false);
+    setCollectionOpen(false);
   }, [pathname]);
 
   // Don't render default front-of-house navbar inside admin routes or dedicated checkout
@@ -25,6 +27,7 @@ export default function Navbar() {
 
   const isHome = pathname === "/";
   const isPortfolio = pathname.startsWith("/portfolio");
+  const isCollection = pathname.startsWith("/collection");
   const isStore = pathname.startsWith("/store");
   const isAbout = pathname.startsWith("/about");
   const isCart = pathname === "/cart";
@@ -47,7 +50,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Navigation Links */}
-        <div className="hidden md:flex items-center gap-8 lg:gap-10 h-full">
+        <div className="hidden md:flex items-center gap-7 lg:gap-9 h-full">
           <Link
             href="/"
             className={`font-sans text-xs uppercase tracking-[0.15em] transition-colors duration-300 h-full flex items-center ${
@@ -69,6 +72,56 @@ export default function Navbar() {
           >
             Portfolio
           </Link>
+
+          {/* Collection Dropdown */}
+          <div
+            className="relative h-full flex items-center"
+            onMouseEnter={() => setCollectionOpen(true)}
+            onMouseLeave={() => setCollectionOpen(false)}
+          >
+            <button
+              type="button"
+              className={`font-sans text-xs uppercase tracking-[0.15em] transition-colors duration-300 flex items-center gap-1 h-full cursor-pointer ${
+                isCollection
+                  ? "text-ink font-semibold border-b-2 border-ink pt-[2px]"
+                  : "text-stone hover:text-ink"
+              }`}
+            >
+              Collection
+              <span className="material-symbols-outlined text-[16px]">
+                arrow_drop_down
+              </span>
+            </button>
+
+            {collectionOpen && (
+              <div className="absolute top-full left-0 w-52 bg-[#F7F5F1] border border-[#E4E1DA] shadow-xl py-2 z-50 animate-fade-in">
+                <Link
+                  href="/collection/bedroom"
+                  className="block px-4 py-2.5 font-sans text-xs uppercase tracking-widest text-stone hover:text-ink hover:bg-[#ebe7e6] transition-colors"
+                >
+                  Bedroom
+                </Link>
+                <Link
+                  href="/collection/dining"
+                  className="block px-4 py-2.5 font-sans text-xs uppercase tracking-widest text-stone hover:text-ink hover:bg-[#ebe7e6] transition-colors"
+                >
+                  Dining
+                </Link>
+                <Link
+                  href="/collection/living"
+                  className="block px-4 py-2.5 font-sans text-xs uppercase tracking-widest text-stone hover:text-ink hover:bg-[#ebe7e6] transition-colors"
+                >
+                  Living
+                </Link>
+                <Link
+                  href="/collection/gifting"
+                  className="block px-4 py-2.5 font-sans text-xs uppercase tracking-widest text-stone hover:text-ink hover:bg-[#ebe7e6] transition-colors"
+                >
+                  Gifting
+                </Link>
+              </div>
+            )}
+          </div>
 
           <Link
             href="/store"
@@ -102,7 +155,7 @@ export default function Navbar() {
             </Link>
 
             {aboutOpen && (
-              <div className="absolute top-full left-0 w-48 bg-[#F7F5F1] border border-[#E4E1DA] shadow-lg py-2 z-50">
+              <div className="absolute top-full left-0 w-48 bg-[#F7F5F1] border border-[#E4E1DA] shadow-lg py-2 z-50 animate-fade-in">
                 <Link
                   href="/about"
                   className="block px-4 py-2.5 font-sans text-xs uppercase tracking-widest text-stone hover:text-ink hover:bg-[#ebe7e6] transition-colors"
@@ -177,6 +230,37 @@ export default function Navbar() {
           >
             Portfolio
           </Link>
+          <div className="py-2 border-b border-[#E4E1DA] space-y-2">
+            <span className="block font-sans text-xs uppercase tracking-widest text-stone">
+              Collection
+            </span>
+            <div className="pl-4 space-y-2">
+              <Link
+                href="/collection/bedroom"
+                className="block font-sans text-xs uppercase tracking-wider text-ink"
+              >
+                Bedroom
+              </Link>
+              <Link
+                href="/collection/dining"
+                className="block font-sans text-xs uppercase tracking-wider text-ink"
+              >
+                Dining
+              </Link>
+              <Link
+                href="/collection/living"
+                className="block font-sans text-xs uppercase tracking-wider text-ink"
+              >
+                Living
+              </Link>
+              <Link
+                href="/collection/gifting"
+                className="block font-sans text-xs uppercase tracking-wider text-ink"
+              >
+                Gifting
+              </Link>
+            </div>
+          </div>
           <Link
             href="/store"
             className="block font-sans text-xs uppercase tracking-widest text-ink py-2 border-b border-[#E4E1DA]"

@@ -1,7 +1,21 @@
 import { NextResponse } from "next/server";
-import { updateProductInDb, deleteProductFromDb } from "@/lib/db";
+import { updateProductInDb, deleteProductFromDb, getProductsFromDb } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
+
+export async function GET(request, { params }) {
+  try {
+    const { slug } = params;
+    const products = await getProductsFromDb();
+    const product = products.find((p) => p.slug === slug);
+    if (!product) {
+      return NextResponse.json({ success: false, error: "Product not found" }, { status: 404 });
+    }
+    return NextResponse.json({ success: true, product });
+  } catch (error) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
+}
 
 export async function PUT(request, { params }) {
   try {

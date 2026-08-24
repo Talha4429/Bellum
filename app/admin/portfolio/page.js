@@ -67,14 +67,13 @@ export default function AdminPortfolioPage() {
           >
             <span className="material-symbols-outlined text-[20px]">refresh</span>
           </button>
-          <button
-            type="button"
-            onClick={() => alert("Project addition API is live. Send POST to /api/admin/portfolio")}
+          <Link
+            href="/admin/portfolio/new"
             className="btn-ink font-sans text-xs uppercase tracking-widest flex items-center gap-2"
           >
             <span className="material-symbols-outlined text-[16px]">add</span>
             Add Project
-          </button>
+          </Link>
         </div>
       </div>
 

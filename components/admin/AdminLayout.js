@@ -2,10 +2,18 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function AdminLayout({ children, activeTab = "dashboard", breadcrumbs = [] }) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  async function handleLogout() {
+    try {
+      await fetch("/api/admin/auth/logout", { method: "POST" });
+    } catch { /* ignore */ }
+    router.push("/admin/login");
+  }
 
   const isDashboard = pathname === "/admin/dashboard" || activeTab === "dashboard";
   const isProducts = pathname.startsWith("/admin/products") || activeTab === "products";
@@ -78,13 +86,14 @@ export default function AdminLayout({ children, activeTab = "dashboard", breadcr
             <span className="material-symbols-outlined text-[18px]">public</span>
             <span>Live Site</span>
           </Link>
-          <Link
-            href="/admin/login"
-            className="flex items-center gap-2 text-stone hover:text-red-700 transition-colors"
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="flex items-center gap-2 text-stone hover:text-red-700 transition-colors w-full text-left"
           >
             <span className="material-symbols-outlined text-[18px]">logout</span>
             <span>Sign Out</span>
-          </Link>
+          </button>
         </div>
       </aside>
 
@@ -116,11 +125,16 @@ export default function AdminLayout({ children, activeTab = "dashboard", breadcr
               <span className="material-symbols-outlined text-[20px] cursor-pointer hover:text-ink">
                 notifications
               </span>
-              <Link href="/admin/login" title="Logout" className="hover:text-ink">
+              <button
+                type="button"
+                onClick={handleLogout}
+                title="Logout"
+                className="hover:text-ink transition-colors"
+              >
                 <span className="material-symbols-outlined text-[20px]">
                   account_circle
                 </span>
-              </Link>
+              </button>
             </div>
           </div>
         </header>

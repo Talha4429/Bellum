@@ -3,28 +3,43 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("admin@bellum.com.pk");
-  const [password, setPassword] = useState("••••••••");
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("from") || "/admin/dashboard";
 
-  function handleSubmit(e) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
-    setError(false);
+    setError(null);
 
-    setTimeout(() => {
-      if (email && password) {
-        router.push("/admin/dashboard");
-      } else {
-        setError(true);
+    try {
+      const res = await fetch("/api/admin/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+
+      if (!data.success) {
+        setError(data.error || "Invalid credentials.");
         setLoading(false);
+        return;
       }
-    }, 600);
+
+      router.push(redirectTo);
+    } catch {
+      setError("Network error. Please try again.");
+      setLoading(false);
+    }
   }
 
   return (
@@ -53,12 +68,15 @@ export default function AdminLoginPage() {
             <h1 className="font-serif text-3xl md:text-4xl text-ink font-light">
               Admin Access
             </h1>
+            <p className="font-sans text-xs text-stone mt-2">
+              Bellum Architecture &amp; Atelier — Internal CMS
+            </p>
           </div>
 
           {error && (
             <div className="mb-6 p-3 bg-[#ffdad6] border-l-2 border-[#ba1a1a] text-[#93000a] text-xs font-sans flex items-center gap-2">
               <span className="material-symbols-outlined text-[18px]">error</span>
-              Invalid credentials provided.
+              {error}
             </div>
           )}
 
@@ -74,6 +92,7 @@ export default function AdminLoginPage() {
                 type="email"
                 id="admin-email"
                 required
+                autoComplete="username"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="admin@bellum.com.pk"
@@ -88,32 +107,64 @@ export default function AdminLoginPage() {
               >
                 Password
               </label>
-              <input
-                type="password"
-                id="admin-password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="minimal-input w-full py-2 font-sans text-sm text-ink"
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="admin-password"
+                  required
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="minimal-input w-full py-2 pr-10 font-sans text-sm text-ink"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  className="absolute right-0 bottom-2 text-stone hover:text-ink transition-colors"
+                  tabIndex={-1}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  <span className="material-symbols-outlined text-[20px]">
+                    {showPassword ? "visibility_off" : "visibility"}
+                  </span>
+                </button>
+              </div>
             </div>
 
             <div className="pt-4">
               <button
                 type="submit"
+                id="admin-login-btn"
                 disabled={loading}
-                className="w-full btn-ink font-sans text-xs uppercase tracking-widest text-center py-3.5 flex items-center justify-center gap-2 group"
+                className="w-full btn-ink font-sans text-xs uppercase tracking-widest text-center py-3.5 flex items-center justify-center gap-2 group disabled:opacity-60"
               >
-                {loading ? "Authenticating..." : "Sign In"}
-                <span className="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">
-                  arrow_forward
-                </span>
+                {loading ? (
+                  <>
+                    <span
+                      className="inline-block w-4 h-4 border-2 border-ivory/40 border-t-ivory rounded-full animate-spin"
+                    />
+                    Authenticating...
+                  </>
+                ) : (
+                  <>
+                    Sign In
+                    <span className="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">
+                      arrow_forward
+                    </span>
+                  </>
+                )}
               </button>
             </div>
           </form>
 
-          <div className="mt-8 text-center">
+          {/* Credential hint */}
+          <div className="mt-6 p-3 bg-[#f7f3f2] border border-[#E4E1DA] text-xs font-sans text-stone text-center">
+            <span className="material-symbols-outlined text-[14px] align-middle mr-1">info</span>
+            Use credentials configured in <code className="font-mono">.env.local</code>
+          </div>
+
+          <div className="mt-6 text-center">
             <Link
               href="/"
               className="font-sans text-xs text-stone hover:text-ink transition-colors uppercase tracking-widest"
@@ -125,7 +176,7 @@ export default function AdminLoginPage() {
 
         <div className="mt-12 text-center">
           <p className="font-sans text-[11px] text-stone tracking-widest uppercase">
-            © {new Date().getFullYear()} BELLUM ARCHITECTURE & ATELIER
+            © {new Date().getFullYear()} BELLUM ARCHITECTURE &amp; ATELIER
           </p>
         </div>
       </div>

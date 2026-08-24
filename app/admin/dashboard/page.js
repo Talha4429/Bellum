@@ -135,7 +135,7 @@ export default function AdminDashboardPage() {
             Total Revenue
           </p>
           <p className="font-serif text-4xl text-ink font-light">
-            ${stats.totalRevenue.toLocaleString()}
+            PKR {stats.totalRevenue.toLocaleString()}
           </p>
         </div>
       </section>

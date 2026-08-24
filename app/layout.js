@@ -2,6 +2,7 @@ import "./globals.css";
 import { CartProvider } from "@/components/CartContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PageTransition from "@/components/PageTransition";
 
 export const metadata = {
   title: "Bellum | Architecture & Bespoke Furniture Studio",
@@ -27,7 +28,7 @@ export default function RootLayout({ children }) {
       <body className="font-sans bg-[#F7F5F1] text-[#111111] antialiased min-h-screen flex flex-col selection:bg-ink selection:text-ivory">
         <CartProvider>
           <Navbar />
-          <div className="flex-grow flex flex-col">{children}</div>
+          <PageTransition>{children}</PageTransition>
           <Footer />
         </CartProvider>
       </body>

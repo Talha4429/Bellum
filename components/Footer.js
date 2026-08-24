@@ -39,8 +39,25 @@ export default function Footer() {
         </div>
 
         {/* Right Column: Links */}
-        <div className="flex flex-col md:flex-row gap-8 md:justify-end">
+        <div className="flex flex-col sm:flex-row gap-8 md:justify-end">
           <div className="flex flex-col gap-3 font-sans text-xs uppercase tracking-widest">
+            <span className="text-ink font-semibold pb-1">Collections</span>
+            <Link href="/collection/bedroom" className="text-stone hover:text-ink transition-colors">
+              Bedroom
+            </Link>
+            <Link href="/collection/dining" className="text-stone hover:text-ink transition-colors">
+              Dining
+            </Link>
+            <Link href="/collection/living" className="text-stone hover:text-ink transition-colors">
+              Living
+            </Link>
+            <Link href="/collection/gifting" className="text-stone hover:text-ink transition-colors">
+              Gifting
+            </Link>
+          </div>
+
+          <div className="flex flex-col gap-3 font-sans text-xs uppercase tracking-widest">
+            <span className="text-ink font-semibold pb-1">Studio</span>
             <Link href="/about" className="text-stone hover:text-ink transition-colors">
               Our Studio
             </Link>
@@ -81,12 +98,12 @@ export default function Footer() {
             >
               LinkedIn
             </a>
-            <Link
+            {/* <Link
               href="/admin/login"
               className="text-stone/60 hover:text-ink transition-colors pt-2"
             >
               Admin Access →
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>
