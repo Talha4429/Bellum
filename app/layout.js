@@ -1,4 +1,5 @@
 import "./globals.css";
+import { AuthProvider } from "@/components/AuthContext";
 import { CartProvider } from "@/components/CartContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -26,11 +27,13 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="font-sans bg-[#F7F5F1] text-[#111111] antialiased min-h-screen flex flex-col selection:bg-ink selection:text-ivory">
-        <CartProvider>
-          <Navbar />
-          <PageTransition>{children}</PageTransition>
-          <Footer />
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <Navbar />
+            <PageTransition>{children}</PageTransition>
+            <Footer />
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );

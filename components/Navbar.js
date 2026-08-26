@@ -5,12 +5,15 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useCart } from "./CartContext";
+import { useAuth } from "./AuthContext";
 
 export default function Navbar() {
   const pathname = usePathname();
   const { itemCount } = useCart();
+  const { user, isAuthenticated, signOut } = useAuth();
   const [aboutOpen, setAboutOpen] = useState(false);
   const [collectionOpen, setCollectionOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Close mobile menu on route change
@@ -18,6 +21,7 @@ export default function Navbar() {
     setMobileMenuOpen(false);
     setAboutOpen(false);
     setCollectionOpen(false);
+    setAccountOpen(false);
   }, [pathname]);
 
   // Don't render default front-of-house navbar inside admin routes or dedicated checkout
@@ -31,6 +35,7 @@ export default function Navbar() {
   const isStore = pathname.startsWith("/store");
   const isAbout = pathname.startsWith("/about");
   const isCart = pathname === "/cart";
+
 
   return (
     <header className="sticky top-0 z-50 w-full bg-[#F7F5F1]/80 backdrop-blur-xl border-b border-[#E4E1DA] transition-all duration-300">
@@ -194,13 +199,71 @@ export default function Navbar() {
             )}
           </Link>
 
-          <Link
-            href="/sign-in"
-            className="p-2 text-ink hover:text-stone transition-colors hidden sm:inline-block"
-            aria-label="Account Login"
+          {/* Account Dropdown */}
+          <div
+            className="relative hidden sm:block"
+            onMouseEnter={() => setAccountOpen(true)}
+            onMouseLeave={() => setAccountOpen(false)}
           >
-            <span className="material-symbols-outlined text-[22px]">person</span>
-          </Link>
+            <button
+              type="button"
+              onClick={() => setAccountOpen(!accountOpen)}
+              className="p-2 text-ink hover:text-stone transition-colors flex items-center gap-1.5 focus:outline-none"
+              aria-label="Account Menu"
+            >
+              <span className="material-symbols-outlined text-[22px]">person</span>
+              {isAuthenticated && user?.name && (
+                <span className="font-sans text-[11px] uppercase tracking-wider font-semibold max-w-[90px] truncate">
+                  {user.name.split(" ")[0]}
+                </span>
+              )}
+            </button>
+
+            {accountOpen && (
+              <div className="absolute right-0 top-full w-56 bg-[#F7F5F1] border border-[#E4E1DA] shadow-xl py-3 z-50 animate-fade-in text-left">
+                {isAuthenticated && user ? (
+                  <>
+                    <div className="px-4 py-2 border-b border-[#E4E1DA] mb-1">
+                      <p className="font-sans text-[10px] uppercase tracking-widest text-stone">Signed In As</p>
+                      <p className="font-serif text-sm font-medium text-ink truncate mt-0.5">{user.name}</p>
+                      <p className="font-sans text-[11px] text-stone truncate">{user.email}</p>
+                    </div>
+                    <Link
+                      href="/cart"
+                      className="block px-4 py-2 font-sans text-xs uppercase tracking-wider text-stone hover:text-ink hover:bg-[#ebe7e6] transition-colors"
+                    >
+                      Shopping Cart
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        await signOut();
+                        setAccountOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2 font-sans text-xs uppercase tracking-wider text-red-700 hover:bg-[#ebe7e6] transition-colors mt-1"
+                    >
+                      Sign Out
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      href="/sign-in"
+                      className="block px-4 py-2 font-sans text-xs uppercase tracking-wider text-ink font-semibold hover:bg-[#ebe7e6] transition-colors"
+                    >
+                      Sign In
+                    </Link>
+                    <Link
+                      href="/sign-up"
+                      className="block px-4 py-2 font-sans text-xs uppercase tracking-wider text-stone hover:text-ink hover:bg-[#ebe7e6] transition-colors"
+                    >
+                      Create Account
+                    </Link>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
 
           <button
             type="button"
@@ -299,12 +362,43 @@ export default function Navbar() {
             <span>Cart</span>
             <span className="bg-ink text-ivory text-xs px-2 py-0.5">{itemCount}</span>
           </Link>
-          <Link
-            href="/sign-in"
-            className="block font-sans text-xs uppercase tracking-widest text-ink py-2"
-          >
-            Sign In / Account
-          </Link>
+
+          {/* Auth section in mobile menu */}
+          <div className="py-2 border-b border-[#E4E1DA]">
+            {isAuthenticated && user ? (
+              <div className="space-y-2">
+                <div className="font-sans text-xs text-stone">
+                  Signed in as <span className="text-ink font-semibold">{user.name}</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    await signOut();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="block font-sans text-xs uppercase tracking-widest text-red-700 py-1"
+                >
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <div className="flex gap-4">
+                <Link
+                  href="/sign-in"
+                  className="block font-sans text-xs uppercase tracking-widest text-ink py-1 font-semibold underline underline-offset-4"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/sign-up"
+                  className="block font-sans text-xs uppercase tracking-widest text-stone hover:text-ink py-1 underline underline-offset-4"
+                >
+                  Create Account
+                </Link>
+              </div>
+            )}
+          </div>
+
           <Link
             href="/admin/login"
             className="block font-sans text-[11px] uppercase tracking-widest text-stone pt-2"
@@ -316,3 +410,4 @@ export default function Navbar() {
     </header>
   );
 }
+

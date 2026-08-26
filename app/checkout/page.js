@@ -1,21 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import SafeImage from "@/components/SafeImage";
 import { useCart } from "@/components/CartContext";
+import { useAuth } from "@/components/AuthContext";
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, subtotal, tax, shipping, total, clearCart } = useCart();
+  const { user, isAuthenticated } = useAuth();
 
   const [formData, setFormData] = useState({
-    email: "client@studio.com",
-    firstName: "Farhan",
-    lastName: "Ali",
-    address: "89-B Hali Road, Gulberg",
+    email: "",
+    firstName: "",
+    lastName: "",
+    phone: "",
+    address: "",
     city: "Lahore",
     zip: "54000",
     country: "Pakistan",
@@ -24,6 +27,22 @@ export default function CheckoutPage() {
     expiry: "12/28",
     cvc: "891",
   });
+
+  useEffect(() => {
+    if (user) {
+      const nameParts = (user.name || "").trim().split(" ");
+      const first = nameParts[0] || "";
+      const last = nameParts.slice(1).join(" ") || "";
+
+      setFormData((prev) => ({
+        ...prev,
+        email: user.email || prev.email,
+        firstName: first || prev.firstName,
+        lastName: last || prev.lastName,
+        phone: user.phone || prev.phone,
+      }));
+    }
+  }, [user]);
 
   const [submitting, setSubmitting] = useState(false);
 
@@ -71,14 +90,64 @@ export default function CheckoutPage() {
 
       {/* Main Checkout Canvas */}
       <main className="flex-grow w-full max-w-[1440px] mx-auto px-6 md:px-16 py-12 md:py-16">
-        <div className="mb-12">
+        <div className="mb-8">
           <h1 className="font-serif text-4xl md:text-6xl font-light text-ink mb-2 tracking-tight">
             Checkout
           </h1>
           <p className="font-sans text-sm md:text-base text-stone">
-            Complete your secure architectural order.
+            Complete your bespoke architectural order.
           </p>
         </div>
+
+        {/* Auth Status Notification / Prompt */}
+        {!isAuthenticated ? (
+          <div className="mb-10 p-5 bg-white border border-[#E4E1DA] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <span className="material-symbols-outlined text-ink text-2xl">
+                account_circle
+              </span>
+              <div>
+                <p className="font-serif text-base text-ink font-medium">
+                  Have a Bellum account?
+                </p>
+                <p className="font-sans text-xs text-stone">
+                  Sign in or create an account for order tracking, express checkout, and bespoke client support.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 shrink-0">
+              <Link
+                href="/sign-in?redirect=/checkout"
+                className="btn-ink font-sans text-[11px] uppercase tracking-wider py-2.5 px-4"
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/sign-up?redirect=/checkout"
+                className="font-sans text-[11px] uppercase tracking-wider text-ink font-semibold border border-[#E4E1DA] py-2.5 px-4 hover:border-ink transition-colors"
+              >
+                Create Account
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <div className="mb-10 p-4 bg-white/70 border border-[#E4E1DA] flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="material-symbols-outlined text-emerald-700 text-xl">
+                verified
+              </span>
+              <p className="font-sans text-xs text-stone">
+                Checking out as <strong className="text-ink">{user?.name}</strong> ({user?.email})
+              </p>
+            </div>
+            <Link
+              href="/sign-in?redirect=/checkout"
+              className="font-sans text-[11px] uppercase tracking-wider text-stone hover:text-ink underline underline-offset-4"
+            >
+              Switch Account
+            </Link>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
@@ -92,23 +161,42 @@ export default function CheckoutPage() {
                   </span>
                   Contact Information
                 </h2>
-                <div className="flex flex-col">
-                  <label
-                    htmlFor="email"
-                    className="font-sans text-xs uppercase tracking-widest text-stone mb-2"
-                  >
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="minimal-input py-2 text-base font-sans"
-                    placeholder="Enter your email"
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor="email"
+                      className="font-sans text-xs uppercase tracking-widest text-stone mb-2"
+                    >
+                      Email Address *
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="minimal-input py-2 text-base font-sans"
+                      placeholder="client@studio.com"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor="phone"
+                      className="font-sans text-xs uppercase tracking-widest text-stone mb-2"
+                    >
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="minimal-input py-2 text-base font-sans"
+                      placeholder="+92 321 8235586"
+                    />
+                  </div>
                 </div>
               </section>
 
@@ -126,7 +214,7 @@ export default function CheckoutPage() {
                       htmlFor="firstName"
                       className="font-sans text-xs uppercase tracking-widest text-stone mb-2"
                     >
-                      First Name
+                      First Name *
                     </label>
                     <input
                       type="text"
@@ -136,6 +224,7 @@ export default function CheckoutPage() {
                       value={formData.firstName}
                       onChange={handleChange}
                       className="minimal-input py-2 text-base font-sans"
+                      placeholder="John"
                     />
                   </div>
                   <div className="flex flex-col">
@@ -143,7 +232,7 @@ export default function CheckoutPage() {
                       htmlFor="lastName"
                       className="font-sans text-xs uppercase tracking-widest text-stone mb-2"
                     >
-                      Last Name
+                      Last Name *
                     </label>
                     <input
                       type="text"
@@ -153,6 +242,7 @@ export default function CheckoutPage() {
                       value={formData.lastName}
                       onChange={handleChange}
                       className="minimal-input py-2 text-base font-sans"
+                      placeholder="Doe"
                     />
                   </div>
                   <div className="flex flex-col md:col-span-2">
@@ -160,7 +250,7 @@ export default function CheckoutPage() {
                       htmlFor="address"
                       className="font-sans text-xs uppercase tracking-widest text-stone mb-2"
                     >
-                      Street Address
+                      Street Address *
                     </label>
                     <input
                       type="text"
@@ -170,6 +260,7 @@ export default function CheckoutPage() {
                       value={formData.address}
                       onChange={handleChange}
                       className="minimal-input py-2 text-base font-sans"
+                      placeholder="89-B Hali Road, Gulberg"
                     />
                   </div>
                   <div className="flex flex-col">
@@ -177,7 +268,7 @@ export default function CheckoutPage() {
                       htmlFor="city"
                       className="font-sans text-xs uppercase tracking-widest text-stone mb-2"
                     >
-                      City
+                      City *
                     </label>
                     <input
                       type="text"
@@ -194,7 +285,7 @@ export default function CheckoutPage() {
                       htmlFor="zip"
                       className="font-sans text-xs uppercase tracking-widest text-stone mb-2"
                     >
-                      Zip / Postal Code
+                      Zip / Postal Code *
                     </label>
                     <input
                       type="text"
@@ -333,29 +424,35 @@ export default function CheckoutPage() {
 
                 {/* Items Mini List */}
                 <div className="space-y-4 mb-6 border-b border-[#E4E1DA] pb-6 max-h-60 overflow-y-auto">
-                  {items.map((item) => (
-                    <div key={item.slug} className="flex gap-4">
-                      <div className="w-14 h-14 bg-[#f1edec] border border-[#E4E1DA] relative shrink-0">
-                        <SafeImage
-                          src={item.image}
-                          alt={item.name}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                      <div className="flex-1 flex justify-between items-start text-sm">
-                        <div>
-                          <p className="font-serif text-ink">{item.name}</p>
-                          <p className="font-sans text-xs text-stone">
-                            Qty: {item.qty}
-                          </p>
+                  {items.length === 0 ? (
+                    <p className="font-sans text-xs text-stone py-4 text-center">
+                      No items in cart
+                    </p>
+                  ) : (
+                    items.map((item) => (
+                      <div key={item.slug} className="flex gap-4">
+                        <div className="w-14 h-14 bg-[#f1edec] border border-[#E4E1DA] relative shrink-0">
+                          <SafeImage
+                            src={item.image}
+                            alt={item.name || item.title}
+                            fill
+                            className="object-cover"
+                          />
                         </div>
-                        <span className="font-sans font-medium text-ink">
-                          PKR {(item.price * item.qty).toLocaleString()}
-                        </span>
+                        <div className="flex-1 flex justify-between items-start text-sm">
+                          <div>
+                            <p className="font-serif text-ink">{item.name || item.title}</p>
+                            <p className="font-sans text-xs text-stone">
+                              Qty: {item.qty}
+                            </p>
+                          </div>
+                          <span className="font-sans font-medium text-ink">
+                            PKR {(item.price * item.qty).toLocaleString()}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))
+                  )}
                 </div>
 
                 {/* Calculations */}
@@ -383,8 +480,8 @@ export default function CheckoutPage() {
 
                 <button
                   type="submit"
-                  disabled={submitting}
-                  className="w-full btn-ink font-sans text-xs uppercase tracking-widest text-center py-4 flex items-center justify-center gap-2 group"
+                  disabled={submitting || items.length === 0}
+                  className="w-full btn-ink font-sans text-xs uppercase tracking-widest text-center py-4 flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {submitting ? (
                     "Processing..."

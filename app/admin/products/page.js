@@ -191,6 +191,11 @@ export default function AdminProductsPage() {
                           fill
                           className="object-cover"
                         />
+                        {Array.isArray(product.images) && product.images.length > 1 && (
+                          <span className="absolute bottom-0 right-0 bg-ink text-ivory text-[9px] font-sans px-1 font-semibold">
+                            {product.images.length}
+                          </span>
+                        )}
                       </div>
                       <div>
                         <div className="font-medium text-ink font-serif text-base">

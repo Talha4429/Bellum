@@ -1,12 +1,25 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import SafeImage from "@/components/SafeImage";
 import { useCart } from "@/components/CartContext";
+import { useAuth } from "@/components/AuthContext";
 
 export default function CartPage() {
-  const { items, removeItem, updateQty, subtotal, tax, shipping, total } =
-    useCart();
+  const router = useRouter();
+  const { items, removeItem, updateQty, subtotal, tax, shipping, total } = useCart();
+  const { isAuthenticated, user } = useAuth();
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+
+  function handleProceedToCheckout() {
+    if (isAuthenticated) {
+      router.push("/checkout");
+    } else {
+      setAuthModalOpen(true);
+    }
+  }
 
   return (
     <main className="w-full max-w-[1440px] mx-auto px-6 md:px-16 pt-16 pb-24 flex-grow">
@@ -134,12 +147,13 @@ export default function CartPage() {
                 <span className="font-bold">PKR {total.toLocaleString()}</span>
               </div>
 
-              <Link
-                href="/checkout"
-                className="w-full btn-ink font-sans text-xs uppercase tracking-widest text-center block mb-4"
+              <button
+                type="button"
+                onClick={handleProceedToCheckout}
+                className="w-full btn-ink font-sans text-xs uppercase tracking-widest text-center block mb-4 cursor-pointer"
               >
                 Proceed to Checkout
-              </Link>
+              </button>
 
               <div className="text-center">
                 <Link
@@ -148,6 +162,61 @@ export default function CartPage() {
                 >
                   Continue Shopping
                 </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Sign In / Sign Up Checkout Prompt Modal */}
+      {authModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/60 backdrop-blur-sm animate-fade-in">
+          <div className="relative w-full max-w-[460px] bg-[#F7F5F1] border border-[#E4E1DA] p-8 md:p-10 shadow-2xl">
+            {/* Close Button */}
+            <button
+              type="button"
+              onClick={() => setAuthModalOpen(false)}
+              className="absolute top-4 right-4 p-2 text-stone hover:text-ink transition-colors focus:outline-none"
+              aria-label="Close modal"
+            >
+              <span className="material-symbols-outlined text-[20px]">close</span>
+            </button>
+
+            <div className="text-center mb-6">
+              <span className="font-sans text-[11px] uppercase tracking-widest text-stone font-semibold block mb-2">
+                Checkout Authentication
+              </span>
+              <h3 className="font-serif text-3xl font-light text-ink mb-3">
+                Sign In or Sign Up
+              </h3>
+              <p className="font-sans text-xs text-stone leading-relaxed">
+                Please sign in with your Bellum client account or create a new account to proceed with your order and payment.
+              </p>
+            </div>
+
+            <div className="space-y-3 pt-2">
+              <Link
+                href="/sign-up?redirect=/checkout"
+                className="w-full bg-ink text-ivory border border-ink py-3.5 px-6 font-sans text-xs uppercase tracking-[0.15em] font-semibold text-center block hover:bg-neutral-800 transition-colors"
+              >
+                Create an Account (Sign Up)
+              </Link>
+
+              <Link
+                href="/sign-in?redirect=/checkout"
+                className="w-full bg-transparent text-ink border border-ink py-3.5 px-6 font-sans text-xs uppercase tracking-[0.15em] font-semibold text-center block hover:bg-ink hover:text-ivory transition-colors"
+              >
+                Sign In to Existing Account
+              </Link>
+
+              <div className="pt-4 text-center">
+                <button
+                  type="button"
+                  onClick={() => router.push("/checkout")}
+                  className="font-sans text-xs text-stone hover:text-ink transition-colors underline underline-offset-4"
+                >
+                  Continue as Guest
+                </button>
               </div>
             </div>
           </div>

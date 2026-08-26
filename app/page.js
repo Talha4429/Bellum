@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import SafeImage from "@/components/SafeImage";
+import ProductSlideshow from "@/components/ProductSlideshow";
 
 const services = [
   {
@@ -209,33 +210,42 @@ export default function Home() {
 
         {featuredProducts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {featuredProducts.map((product) => (
-              <Link
-                key={product.slug}
-                href="/store"
-                className="group block cursor-pointer"
-              >
-                <div className="aspect-[4/5] bg-[#f1edec] relative mb-4 border border-[#E4E1DA] overflow-hidden">
-                  <SafeImage
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
-                  />
+            {featuredProducts.map((product) => {
+              const productImages =
+                Array.isArray(product.images) && product.images.length > 0
+                  ? product.images
+                  : product.image
+                  ? [product.image]
+                  : [];
+
+              return (
+                <div
+                  key={product.slug}
+                  className="group block"
+                >
+                  <div className="mb-4 border border-[#E4E1DA]">
+                    <ProductSlideshow
+                      images={productImages}
+                      alt={product.name}
+                      aspectRatio="aspect-[4/5]"
+                    />
+                  </div>
+                  <Link href="/store" className="block">
+                    <div className="flex justify-between items-baseline">
+                      <h3 className="font-sans text-lg font-medium text-ink group-hover:text-stone transition-colors">
+                        {product.name}
+                      </h3>
+                      <span className="font-sans text-xs uppercase tracking-wider text-stone group-hover:text-ink transition-colors">
+                        PKR {product.price?.toLocaleString() || product.price}
+                      </span>
+                    </div>
+                    <p className="font-sans text-sm text-stone mt-1">
+                      {product.finish || product.category}
+                    </p>
+                  </Link>
                 </div>
-                <div className="flex justify-between items-baseline">
-                  <h3 className="font-sans text-lg font-medium text-ink">
-                    {product.name}
-                  </h3>
-                  <span className="font-sans text-xs uppercase tracking-wider text-stone group-hover:text-ink transition-colors">
-                    PKR {product.price?.toLocaleString() || product.price}
-                  </span>
-                </div>
-                <p className="font-sans text-sm text-stone mt-1">
-                  {product.finish || product.category}
-                </p>
-              </Link>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <div className="py-16 text-center border border-dashed border-[#E4E1DA]">

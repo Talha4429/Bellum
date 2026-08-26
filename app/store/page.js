@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import SafeImage from "@/components/SafeImage";
+import ProductSlideshow from "@/components/ProductSlideshow";
 import { useCart } from "@/components/CartContext";
 
 const categories = ["All", "Seating", "Tables", "Lighting", "Storage"];
@@ -76,54 +77,62 @@ export default function StorePage() {
         </div>
       ) : filteredProducts.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-          {filteredProducts.map((product) => (
-            <article
-              key={product.slug}
-              className="flex flex-col group border border-[#E4E1DA] p-4 bg-white/30 hover:bg-white transition-all duration-300"
-            >
-              <div className="aspect-[4/5] w-full overflow-hidden mb-4 bg-[#f1edec] relative">
-                <SafeImage
-                  src={product.image}
-                  alt={product.name}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-              </div>
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <span className="font-sans text-xs uppercase tracking-widest text-stone mb-1 block">
-                    {product.category}
-                  </span>
-                  <h2 className="font-serif text-xl md:text-2xl text-ink">
-                    {product.name}
-                  </h2>
-                  {product.finish && (
-                    <p className="font-sans text-xs text-stone mt-1">
-                      {product.finish}
-                    </p>
-                  )}
-                </div>
-                <span className="font-sans text-base font-medium text-ink">
-                  PKR {product.price?.toLocaleString() || product.price}
-                </span>
-              </div>
+          {filteredProducts.map((product) => {
+            const productImages =
+              Array.isArray(product.images) && product.images.length > 0
+                ? product.images
+                : product.image
+                ? [product.image]
+                : [];
 
-              <p className="font-sans text-xs leading-relaxed text-stone mb-6 flex-grow">
-                {product.description}
-              </p>
-
-              <button
-                type="button"
-                onClick={() => addItem(product, 1)}
-                className="mt-auto w-full border border-ink text-ink py-3 px-6 font-sans text-xs uppercase tracking-widest hover:bg-ink hover:text-ivory transition-colors duration-300 text-center flex items-center justify-center gap-2"
+            return (
+              <article
+                key={product.slug}
+                className="flex flex-col group border border-[#E4E1DA] p-4 bg-white/30 hover:bg-white transition-all duration-300"
               >
-                <span className="material-symbols-outlined text-[16px]">
-                  shopping_bag
-                </span>
-                Add to Cart
-              </button>
-            </article>
-          ))}
+                <div className="mb-4">
+                  <ProductSlideshow
+                    images={productImages}
+                    alt={product.name}
+                    aspectRatio="aspect-[4/5]"
+                  />
+                </div>
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <span className="font-sans text-xs uppercase tracking-widest text-stone mb-1 block">
+                      {product.category}
+                    </span>
+                    <h2 className="font-serif text-xl md:text-2xl text-ink">
+                      {product.name}
+                    </h2>
+                    {product.finish && (
+                      <p className="font-sans text-xs text-stone mt-1">
+                        {product.finish}
+                      </p>
+                    )}
+                  </div>
+                  <span className="font-sans text-base font-medium text-ink">
+                    PKR {product.price?.toLocaleString() || product.price}
+                  </span>
+                </div>
+
+                <p className="font-sans text-xs leading-relaxed text-stone mb-6 flex-grow">
+                  {product.description}
+                </p>
+
+                <button
+                  type="button"
+                  onClick={() => addItem(product, 1)}
+                  className="mt-auto w-full border border-ink text-ink py-3 px-6 font-sans text-xs uppercase tracking-widest hover:bg-ink hover:text-ivory transition-colors duration-300 text-center flex items-center justify-center gap-2"
+                >
+                  <span className="material-symbols-outlined text-[16px]">
+                    shopping_bag
+                  </span>
+                  Add to Cart
+                </button>
+              </article>
+            );
+          })}
         </div>
       ) : (
         <div className="py-20 text-center text-stone font-sans text-sm border border-dashed border-[#E4E1DA]">
