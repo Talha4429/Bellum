@@ -111,9 +111,6 @@ function SignUpContent() {
               priority
             />
           </Link>
-          <span className="font-serif text-2xl tracking-tighter text-ink font-normal">
-            BELLUM
-          </span>
         </div>
 
         {/* Header */}
