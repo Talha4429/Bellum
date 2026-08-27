@@ -4,6 +4,7 @@ import { CartProvider } from "@/components/CartContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
+import { ensureAssetsSynced } from "@/lib/asset-sync";
 
 export const metadata = {
   title: "Bellum | Architecture & Bespoke Furniture Studio",
@@ -12,6 +13,7 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  ensureAssetsSynced();
   return (
     <html lang="en" className="scroll-smooth">
       <head>

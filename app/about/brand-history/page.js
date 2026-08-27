@@ -51,7 +51,7 @@ export default function BrandHistoryPage() {
       <section className="mb-24">
         <div className="w-full aspect-[16/9] border border-[#E4E1DA] overflow-hidden bg-[#f1edec] relative">
           <SafeImage
-            src="/images/portfolio/hampstead-cover.jpg"
+            src="/images/story/atelier-craft.jpg"
             alt="Bellum Architecture Studio Lahore"
             fill
             priority

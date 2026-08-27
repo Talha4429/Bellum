@@ -83,7 +83,37 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Quick Action Buttons */}
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-4 items-center">
+          <button
+            type="button"
+            onClick={async () => {
+              try {
+                setLoading(true);
+                const res = await fetch("/api/admin/seed", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ force: false }),
+                });
+                const data = await res.json();
+                if (data.success) {
+                  alert("Studio catalog & sample photos synchronized to PostgreSQL!");
+                  window.location.reload();
+                } else {
+                  alert("Sync error: " + data.error);
+                }
+              } catch (err) {
+                alert("Sync failed: " + err.message);
+              } finally {
+                setLoading(false);
+              }
+            }}
+            disabled={loading}
+            className="border border-[#111111] px-5 py-3 font-sans text-xs uppercase tracking-widest text-ink hover:bg-stone/10 transition-colors flex items-center gap-2"
+            title="Populate or refresh PostgreSQL database with studio photos and catalog"
+          >
+            <span className="material-symbols-outlined text-[16px]">sync</span>
+            Sync Studio Catalog
+          </button>
           <Link
             href="/admin/products/new"
             className="btn-ink font-sans text-xs uppercase tracking-widest flex items-center gap-2"

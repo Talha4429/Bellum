@@ -44,7 +44,7 @@ export default function AboutStudioPage() {
         <div className="col-span-1 md:col-span-8 flex flex-col gap-6">
           <div className="aspect-[16/9] w-full mb-6 overflow-hidden bg-[#f1edec] border border-[#E4E1DA] relative">
             <SafeImage
-              src="/images/portfolio/hampstead-cover.jpg"
+              src="/images/story/studio-overview.jpg"
               alt="Bellum Architecture Studio"
               fill
               className="object-cover"

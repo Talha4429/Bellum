@@ -400,22 +400,32 @@ export default function AdminNewProductPage() {
                 )}
               </div>
 
-              {/* Add image by URL */}
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={customImageUrl}
-                  onChange={(e) => setCustomImageUrl(e.target.value)}
-                  placeholder="Or paste an image URL (e.g. /images/products/chair.jpg)..."
-                  className={INPUT_BASE + " text-xs"}
-                />
-                <button
-                  type="button"
-                  onClick={handleAddUrlImage}
-                  className="px-5 border border-ink text-ink font-sans text-xs uppercase tracking-widest font-semibold hover:bg-ink hover:text-ivory transition-colors shrink-0"
-                >
-                  Add Picture
-                </button>
+              {/* Quick Studio Presets */}
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-sans text-[11px] uppercase tracking-wider text-stone mr-1">Studio Presets:</span>
+                {[
+                  { name: "Cane Armchair", path: "/images/products/cane-leather-armchair.jpg" },
+                  { name: "Fluted Marble", path: "/images/products/fluted-marble-bench-table.jpg" },
+                  { name: "Lacquer Table", path: "/images/products/circular-lacquer-coffee-table.jpg" },
+                  { name: "Brass Lamp", path: "/images/products/brass-leather-table-lamp.jpg" },
+                  { name: "Ceramic Lamp", path: "/images/products/ceramic-shade-lamp.jpg" },
+                  { name: "Daybed Bench", path: "/images/products/bolster-daybed-bench.jpg" },
+                  { name: "Obsidian Console", path: "/images/products/cabriole-lacquer-console.jpg" },
+                  { name: "Linen Sofa", path: "/images/products/tailored-linen-sofa.jpg" },
+                ].map((preset) => (
+                  <button
+                    key={preset.path}
+                    type="button"
+                    onClick={() => {
+                      if (!formData.images.includes(preset.path)) {
+                        setFormData((prev) => ({ ...prev, images: [...prev.images, preset.path] }));
+                      }
+                    }}
+                    className="px-2.5 py-1 text-[11px] font-sans border border-[#E4E1DA] hover:border-ink hover:text-ink transition-colors bg-white"
+                  >
+                    + {preset.name}
+                  </button>
+                ))}
               </div>
 
               {/* Slideshow Live Preview Mode */}

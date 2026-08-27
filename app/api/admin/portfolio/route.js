@@ -1,10 +1,13 @@
 import { NextResponse } from "next/server";
-import { getPortfolioFromDb, insertProjectToDb } from "@/lib/db";
+import { getPortfolioFromDb, insertProjectToDb, initDatabase } from "@/lib/db";
+import { ensureAssetsSynced } from "@/lib/asset-sync";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
+    ensureAssetsSynced();
+    await initDatabase();
     const portfolio = await getPortfolioFromDb();
     return NextResponse.json({ success: true, portfolio });
   } catch (error) {
@@ -17,6 +20,8 @@ export async function GET() {
 
 export async function POST(request) {
   try {
+    ensureAssetsSynced();
+    await initDatabase();
     const body = await request.json();
     if (!body.title) {
       return NextResponse.json(

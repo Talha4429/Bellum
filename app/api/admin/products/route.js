@@ -1,10 +1,13 @@
 import { NextResponse } from "next/server";
-import { getProductsFromDb, insertProductToDb } from "@/lib/db";
+import { getProductsFromDb, insertProductToDb, initDatabase } from "@/lib/db";
+import { ensureAssetsSynced } from "@/lib/asset-sync";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
+    ensureAssetsSynced();
+    await initDatabase();
     const products = await getProductsFromDb();
     return NextResponse.json({ success: true, products });
   } catch (error) {
@@ -17,6 +20,8 @@ export async function GET() {
 
 export async function POST(request) {
   try {
+    ensureAssetsSynced();
+    await initDatabase();
     const body = await request.json();
     if (!body.name || !body.category || !body.price) {
       return NextResponse.json(

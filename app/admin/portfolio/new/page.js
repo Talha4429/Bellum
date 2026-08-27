@@ -25,9 +25,47 @@ export default function AdminNewProjectPage() {
     images: "",
   });
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [coverPreviewError, setCoverPreviewError] = useState(false);
+
+  async function handleFileUpload(e, targetField = "coverImage") {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    setUploading(true);
+    setError(null);
+
+    try {
+      const uploadedPaths = [];
+      for (const file of files) {
+        const uploadData = new FormData();
+        uploadData.append("file", file);
+        const res = await fetch("/api/admin/upload", {
+          method: "POST",
+          body: uploadData,
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error || "Upload failed");
+        uploadedPaths.push(data.path);
+      }
+
+      if (targetField === "coverImage") {
+        setFormData((prev) => ({ ...prev, coverImage: uploadedPaths[0] }));
+        setCoverPreviewError(false);
+      } else {
+        setFormData((prev) => {
+          const current = prev.images ? prev.images.split(",").map((s) => s.trim()).filter(Boolean) : [];
+          return { ...prev, images: [...current, ...uploadedPaths].join(", ") };
+        });
+      }
+    } catch (err) {
+      setError("Image upload failed: " + err.message);
+    } finally {
+      setUploading(false);
+    }
+  }
 
   function handleChange(e) {
     const { name, value, type, checked } = e.target;
@@ -269,16 +307,51 @@ export default function AdminNewProjectPage() {
               </h2>
             </div>
             <div className="p-8">
-              <label htmlFor="proj-cover" className={LABEL_BASE}>Cover Image URL or Path</label>
-              <input
-                type="text"
-                id="proj-cover"
-                name="coverImage"
-                value={formData.coverImage}
-                onChange={handleChange}
-                placeholder="/images/portfolio/project-cover.jpg"
-                className={INPUT_BASE + " mb-6"}
-              />
+              <div className="flex flex-col sm:flex-row gap-3 mb-4">
+                <input
+                  type="text"
+                  id="proj-cover"
+                  name="coverImage"
+                  value={formData.coverImage}
+                  onChange={handleChange}
+                  placeholder="/images/portfolio/project-cover.jpg"
+                  className={INPUT_BASE}
+                />
+                <label className="border border-ink bg-ink text-ivory px-5 py-3 font-sans text-xs uppercase tracking-widest font-semibold hover:bg-neutral-800 transition-colors shrink-0 flex items-center justify-center gap-2 cursor-pointer">
+                  <span className="material-symbols-outlined text-[16px]">upload_file</span>
+                  {uploading ? "Uploading..." : "Upload File"}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleFileUpload(e, "coverImage")}
+                    className="hidden"
+                  />
+                </label>
+              </div>
+
+              {/* Quick Preset Selector */}
+              <div className="mb-6 flex flex-wrap items-center gap-2">
+                <span className="font-sans text-[11px] uppercase tracking-wider text-stone mr-1">Studio Presets:</span>
+                {[
+                  { name: "Grand Salon", path: "/images/portfolio/gulberg-penthouse-salon.jpg" },
+                  { name: "Modern Residence", path: "/images/portfolio/dha-contemporary-residence.jpg" },
+                  { name: "Study Suite", path: "/images/portfolio/gulberg-penthouse-study.jpg" },
+                  { name: "Marble Pavilion", path: "/images/portfolio/dha-marble-pavilion.jpg" },
+                  { name: "Heritage Villa", path: "/images/portfolio/hampstead-cover.jpg" },
+                ].map((preset) => (
+                  <button
+                    key={preset.path}
+                    type="button"
+                    onClick={() => {
+                      setFormData((p) => ({ ...p, coverImage: preset.path }));
+                      setCoverPreviewError(false);
+                    }}
+                    className="px-2.5 py-1 text-[11px] font-sans border border-[#E4E1DA] hover:border-ink hover:text-ink transition-colors bg-white"
+                  >
+                    {preset.name}
+                  </button>
+                ))}
+              </div>
               <div className="w-full aspect-video bg-[#f1edec] border border-dashed border-[#C8C4BC] flex items-center justify-center overflow-hidden">
                 {showCoverPreview ? (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -306,15 +379,30 @@ export default function AdminNewProjectPage() {
                     (comma-separated)
                   </span>
                 </label>
-                <textarea
-                  id="proj-images"
-                  name="images"
-                  rows={3}
-                  value={formData.images}
-                  onChange={handleChange}
-                  placeholder="/images/portfolio/project-1.jpg, /images/portfolio/project-2.jpg"
-                  className={INPUT_BASE + " resize-none"}
-                />
+                <div className="flex flex-col gap-3">
+                  <textarea
+                    id="proj-images"
+                    name="images"
+                    rows={3}
+                    value={formData.images}
+                    onChange={handleChange}
+                    placeholder="/images/portfolio/project-1.jpg, /images/portfolio/project-2.jpg"
+                    className={INPUT_BASE + " resize-none"}
+                  />
+                  <div className="flex items-center gap-3">
+                    <label className="border border-[#E4E1DA] bg-white text-ink px-4 py-2 font-sans text-xs uppercase tracking-widest hover:border-ink transition-colors flex items-center gap-2 cursor-pointer w-fit">
+                      <span className="material-symbols-outlined text-[16px]">collections</span>
+                      Upload Multiple Gallery Photos
+                      <input
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        onChange={(e) => handleFileUpload(e, "images")}
+                        className="hidden"
+                      />
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
