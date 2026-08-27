@@ -7,8 +7,14 @@ import { usePathname } from "next/navigation";
 export default function Footer() {
   const pathname = usePathname();
 
-  // Suppress footer on admin routes and transactional checkout
-  if (pathname.startsWith("/admin") || pathname === "/checkout") {
+  // Suppress footer on admin routes, transactional checkout, login, sign-in, and sign-up pages
+  if (
+    pathname.startsWith("/admin") ||
+    pathname === "/checkout" ||
+    pathname === "/sign-in" ||
+    pathname === "/sign-up" ||
+    pathname === "/login"
+  ) {
     return null;
   }
 
