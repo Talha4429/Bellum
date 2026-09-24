@@ -62,18 +62,18 @@ export default function Home() {
     <main className="w-full">
       {/* Hero Section (Immersive Background Image with Overlay Typography) */}
       <section className="relative w-full min-h-[82vh] md:min-h-[88vh] flex items-center justify-center overflow-hidden border-b border-[#E4E1DA]">
-        {/* Background Hero Image */}
-        <div className="absolute inset-0 w-full h-full">
-          <SafeImage
-            src="/images/misc/hero-architecture.jpg"
-            alt="Bellum Architectural Living Space & Bespoke Furniture"
-            fill
-            priority
-            className="w-full h-full object-cover object-center scale-105 animate-fade-in"
+        {/* Background Hero Vimeo Video */}
+        <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none bg-black">
+          <iframe
+            src="https://player.vimeo.com/video/680337803?api=1&background=1&autoplay=1&loop=1&muted=1&playsinline=1"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.78vh] min-w-full min-h-full h-[56.25vw] pointer-events-none border-0"
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowFullScreen
+            title="Bellum Cinematic Architectural Hero Video"
           />
-          {/* Multi-layer luxury scrim gradient for optimal legibility */}
-          <div className="absolute inset-0 bg-black/45 backdrop-brightness-95" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/50" />
+          {/* Subtle scrim gradient for optimal video visibility and crisp text contrast */}
+          <div className="absolute inset-0 bg-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
         </div>
 
         {/* Hero Content Overlay */}
