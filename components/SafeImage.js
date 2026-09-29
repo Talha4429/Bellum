@@ -10,7 +10,7 @@ export default function SafeImage({ src, alt, className, fill, ...props }) {
     return (
       <div className={`${className || ""} bg-[#F4F1EA] border border-[#E4E1DA] flex items-center justify-center`}>
         <span className="material-symbols-outlined text-[#B2ADA3] text-3xl select-none">
-          person
+          image
         </span>
       </div>
     );

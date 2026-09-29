@@ -65,7 +65,7 @@ export default function Home() {
         {/* Background Hero Image */}
         <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none bg-black">
           <SafeImage
-            src="/images/hero/home - web.png"
+            src="/images/hero/home-web.png"
             alt="Bellum Architecture and Interiors"
             fill
             priority

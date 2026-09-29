@@ -54,21 +54,24 @@ export default function CollectionPage({ params }) {
 
       {/* Hero Visual Banner */}
       <section className="mb-20">
-        <div className="relative aspect-[16/9] md:aspect-[21/9] max-h-[640px] overflow-hidden border border-[#E4E1DA] bg-[#f1edec]">
-          {/* <SafeImage
-            src={collection.heroImage}
-            alt={collection.title}
-            fill
-            priority
-            className="object-cover"
-          /> */}
-          <iframe
-            src={collection.heroVideo}
-            className="w-full h-full object-cover"
-            title={collection.title}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
+        <div className="relative w-full aspect-[16/9] overflow-hidden border border-[#E4E1DA] bg-[#111111] shadow-sm">
+          {collection.heroVideo ? (
+            <iframe
+              src={collection.heroVideo}
+              className="w-full h-full object-cover"
+              title={collection.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          ) : (
+            <SafeImage
+              src={collection.heroImage}
+              alt={collection.title}
+              fill
+              priority
+              className="object-cover object-center"
+            />
+          )}
         </div>
       </section>
 
